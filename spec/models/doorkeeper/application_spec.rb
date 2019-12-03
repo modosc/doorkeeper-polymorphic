@@ -282,33 +282,34 @@ module Doorkeeper
     end
 
     describe :authorized_for do
-      let(:resource_owner) { double(:resource_owner, id: 10) }
+      let(:resource_owner) { FactoryBot.create(:resource_owner) }
+      let(:other_resource_owner) { FactoryBot.create(:resource_owner) }
 
       it "is empty if the application is not authorized for anyone" do
         expect(Application.authorized_for(resource_owner)).to be_empty
       end
 
       it "returns only application for a specific resource owner" do
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id + 1)
-        token = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id)
+        FactoryBot.create(:access_token, resource_owner: other_resource_owner)
+        token = FactoryBot.create(:access_token, resource_owner: resource_owner)
         expect(Application.authorized_for(resource_owner)).to eq([token.application])
       end
 
       it "excludes revoked tokens" do
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, revoked_at: 2.days.ago)
+        FactoryBot.create(:access_token, resource_owner: resource_owner, revoked_at: 2.days.ago)
         expect(Application.authorized_for(resource_owner)).to be_empty
       end
 
       it "returns all applications that have been authorized" do
-        token1 = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id)
-        token2 = FactoryBot.create(:access_token, resource_owner_id: resource_owner.id)
+        token1 = FactoryBot.create(:access_token, resource_owner: resource_owner)
+        token2 = FactoryBot.create(:access_token, resource_owner: resource_owner)
         expect(Application.authorized_for(resource_owner)).to eq([token1.application, token2.application])
       end
 
       it "returns only one application even if it has been authorized twice" do
         application = FactoryBot.create(:application)
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, application: application)
-        FactoryBot.create(:access_token, resource_owner_id: resource_owner.id, application: application)
+        FactoryBot.create(:access_token, resource_owner: resource_owner, application: application)
+        FactoryBot.create(:access_token, resource_owner: resource_owner, application: application)
         expect(Application.authorized_for(resource_owner)).to eq([application])
       end
     end
@@ -316,7 +317,7 @@ module Doorkeeper
     describe :revoke_tokens_and_grants_for do
       it "revokes all access tokens and access grants" do
         application_id = 42
-        resource_owner = double
+        resource_owner = FactoryBot.create(:resource_owner)
         expect(Doorkeeper::AccessToken)
           .to receive(:revoke_all_for).with(application_id, resource_owner)
         expect(Doorkeeper::AccessGrant)

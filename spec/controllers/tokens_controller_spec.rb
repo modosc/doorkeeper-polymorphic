@@ -48,7 +48,7 @@ describe Doorkeeper::TokensController do
     end
 
     it "issues the token for the current resource owner" do
-      expect(Doorkeeper::AccessToken.first.resource_owner_id).to eq(user.id)
+      expect(Doorkeeper::AccessToken.first.resource_owner).to eq(user)
     end
   end
 

@@ -33,7 +33,7 @@ module Doorkeeper
         lazy_load do
           require "doorkeeper/models/concerns/ownership"
 
-          Doorkeeper::Application.send :include, Doorkeeper::Models::Ownership
+          Doorkeeper::Application.include Doorkeeper::Models::Ownership
         end
       end
 

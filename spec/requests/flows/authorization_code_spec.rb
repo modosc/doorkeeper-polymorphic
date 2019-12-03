@@ -177,7 +177,7 @@ feature "Authorization Code Flow" do
 
     access_token_exists application: @client,
                         expires_in: -100, # even expired token
-                        resource_owner_id: @resource_owner.id,
+                        resource_owner: @resource_owner,
                         scopes: "public write"
 
     visit authorization_endpoint_url(client: @client, scope: "public write")

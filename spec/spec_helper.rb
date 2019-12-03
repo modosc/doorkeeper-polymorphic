@@ -20,6 +20,8 @@ require "rspec/rails"
 require "capybara/rspec"
 require "database_cleaner"
 require "generator_spec/test_case"
+require "pry-rails"
+require "pry-byebug"
 
 # Load JRuby SQLite3 if in that platform
 if defined? JRUBY_VERSION

@@ -84,6 +84,7 @@ module Doorkeeper
 
     def generate_secret
       return unless secret.blank?
+
       renew_secret
     end
 

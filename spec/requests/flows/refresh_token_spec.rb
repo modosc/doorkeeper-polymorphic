@@ -10,6 +10,7 @@ describe "Refresh Token Flow" do
     end
 
     client_exists
+    create_resource_owner
   end
 
   context "issuing a refresh token" do
@@ -43,7 +44,7 @@ describe "Refresh Token Flow" do
       @token = FactoryBot.create(
         :access_token,
         application: @client,
-        resource_owner_id: 1,
+        resource_owner: @resource_owner,
         use_refresh_token: true
       )
     end
@@ -110,7 +111,7 @@ describe "Refresh Token Flow" do
         FactoryBot.create(
           :access_token,
           application: @client,
-          resource_owner_id: 1,
+          resource_owner: @resource_owner,
           use_refresh_token: true
         )
       end
@@ -119,7 +120,7 @@ describe "Refresh Token Flow" do
         FactoryBot.create(
           :access_token,
           application: public_client,
-          resource_owner_id: 1,
+          resource_owner: @resource_owner,
           use_refresh_token: true
         )
       end
@@ -183,7 +184,6 @@ describe "Refresh Token Flow" do
       config_is_set(:resource_owner_from_credentials) do
         User.authenticate! params[:username], params[:password]
       end
-      create_resource_owner
       _another_token = post password_token_endpoint_url(
         client: @client, resource_owner: @resource_owner
       )
@@ -192,7 +192,7 @@ describe "Refresh Token Flow" do
       @token = FactoryBot.create(
         :access_token,
         application: @client,
-        resource_owner_id: @resource_owner.id,
+        resource_owner: @resource_owner,
         use_refresh_token: true
       )
       @token.update_attribute :expires_in, -100
@@ -226,7 +226,7 @@ describe "Refresh Token Flow" do
 
     def last_token
       Doorkeeper::AccessToken.last_authorized_token_for(
-        @client.id, @resource_owner.id
+        @client.id, @resource_owner
       )
     end
   end

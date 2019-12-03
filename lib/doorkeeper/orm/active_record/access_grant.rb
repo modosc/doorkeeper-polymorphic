@@ -9,7 +9,9 @@ module Doorkeeper
     belongs_to :application, class_name: "Doorkeeper::Application",
                              optional: true, inverse_of: :access_grants
 
-    validates :resource_owner_id,
+    belongs_to :resource_owner, polymorphic: true
+
+    validates :resource_owner,
               :application_id,
               :token,
               :expires_in,

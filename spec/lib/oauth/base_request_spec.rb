@@ -118,10 +118,11 @@ module Doorkeeper::OAuth
     end
 
     describe "#find_or_create_access_token" do
+      let(:resource_owner) { FactoryBot.create(:resource_owner) }
       it "returns an instance of AccessToken" do
         result = subject.find_or_create_access_token(
           client,
-          "1",
+          resource_owner,
           "public",
           server
         )
@@ -139,7 +140,7 @@ module Doorkeeper::OAuth
 
         result = subject.find_or_create_access_token(
           client,
-          "1",
+          resource_owner,
           "public",
           server
         )
@@ -158,7 +159,7 @@ module Doorkeeper::OAuth
 
         result = subject.find_or_create_access_token(
           client,
-          "1",
+          resource_owner,
           "public",
           server
         )
@@ -166,7 +167,7 @@ module Doorkeeper::OAuth
 
         result = subject.find_or_create_access_token(
           client,
-          "1",
+          resource_owner,
           "private",
           server
         )

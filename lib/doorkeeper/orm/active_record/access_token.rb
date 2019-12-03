@@ -9,6 +9,8 @@ module Doorkeeper
     belongs_to :application, class_name: "Doorkeeper::Application",
                              inverse_of: :access_tokens, optional: true
 
+    belongs_to :resource_owner, polymorphic: true, optional: true
+
     validates :token, presence: true, uniqueness: { case_sensitive: true }
     validates :refresh_token, uniqueness: { case_sensitive: true }, if: :use_refresh_token?
 
@@ -30,7 +32,7 @@ module Doorkeeper
     #   active Access Tokens for Resource Owner
     #
     def self.active_for(resource_owner)
-      where(resource_owner_id: resource_owner.id, revoked_at: nil)
+      where(resource_owner: resource_owner, revoked_at: nil)
     end
 
     def self.refresh_token_revoked_on_use?

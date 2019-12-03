@@ -16,7 +16,7 @@ describe Doorkeeper::AuthorizationsController, "implicit grant flow" do
 
   let(:client)        { FactoryBot.create :application }
   let(:user)          { User.create!(name: "Joe", password: "sekret") }
-  let(:access_token)  { FactoryBot.build :access_token, resource_owner_id: user.id, application_id: client.id, scopes: "default" }
+  let(:access_token)  { FactoryBot.build :access_token, resource_owner: user, application_id: client.id, scopes: "default" }
 
   before do
     Doorkeeper.configure do
@@ -63,7 +63,7 @@ describe Doorkeeper::AuthorizationsController, "implicit grant flow" do
     end
 
     it "issues the token for the current resource owner" do
-      expect(Doorkeeper::AccessToken.first.resource_owner_id).to eq(user.id)
+      expect(Doorkeeper::AccessToken.first.resource_owner).to eq(user)
     end
   end
 
@@ -101,7 +101,7 @@ describe Doorkeeper::AuthorizationsController, "implicit grant flow" do
     end
 
     it "issues the token for the current resource owner" do
-      expect(Doorkeeper::AccessToken.first.resource_owner_id).to eq(user.id)
+      expect(Doorkeeper::AccessToken.first.resource_owner).to eq(user)
     end
   end
 
@@ -406,7 +406,7 @@ describe Doorkeeper::AuthorizationsController, "implicit grant flow" do
     end
 
     it "issues the token for the current resource owner" do
-      expect(Doorkeeper::AccessToken.first.resource_owner_id).to eq(user.id)
+      expect(Doorkeeper::AccessToken.first.resource_owner).to eq(user)
     end
   end
 
@@ -477,7 +477,7 @@ describe Doorkeeper::AuthorizationsController, "implicit grant flow" do
     end
 
     it "issues the token for the current resource owner" do
-      expect(Doorkeeper::AccessToken.first.resource_owner_id).to eq(user.id)
+      expect(Doorkeeper::AccessToken.first.resource_owner).to eq(user)
     end
   end
 

@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :access_grant, class: "Doorkeeper::AccessGrant" do
-    sequence(:resource_owner_id) { |n| n }
+    resource_owner
     application
     redirect_uri { "https://app.com/callback" }
     expires_in { 100 }
@@ -10,7 +10,7 @@ FactoryBot.define do
   end
 
   factory :access_token, class: "Doorkeeper::AccessToken" do
-    sequence(:resource_owner_id) { |n| n }
+    resource_owner
     application
     expires_in { 2.hours }
 
@@ -26,5 +26,5 @@ FactoryBot.define do
 
   # do not name this factory :user, otherwise it will conflict with factories
   # from applications that use doorkeeper factories in their own tests
-  factory :doorkeeper_testing_user, class: :user
+  factory :doorkeeper_testing_user, aliases: [:resource_owner], class: :user
 end

@@ -13,7 +13,7 @@ describe "Revoke Token Flow" do
     let(:access_token) do
       FactoryBot.create(:access_token,
                         application: client_application,
-                        resource_owner_id: resource_owner.id,
+                        resource_owner: resource_owner,
                         use_refresh_token: true)
     end
 
@@ -102,7 +102,7 @@ describe "Revoke Token Flow" do
       let(:access_token) do
         FactoryBot.create(:access_token,
                           application: nil,
-                          resource_owner_id: resource_owner.id,
+                          resource_owner: resource_owner,
                           use_refresh_token: true)
       end
 
@@ -124,7 +124,7 @@ describe "Revoke Token Flow" do
         let(:access_token) do
           FactoryBot.create(:access_token,
                             application: client_application,
-                            resource_owner_id: resource_owner.id,
+                            resource_owner: resource_owner,
                             use_refresh_token: true)
         end
 

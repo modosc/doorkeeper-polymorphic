@@ -16,7 +16,7 @@ module Doorkeeper::OAuth
       )
     end
     let(:client) { FactoryBot.create(:application) }
-    let(:owner)  { double :owner, id: 99 }
+    let(:owner)  { FactoryBot.create(:resource_owner) }
 
     before do
       allow(server).to receive(:option_defined?).with(:custom_access_token_expires_in).and_return(true)
@@ -63,7 +63,7 @@ module Doorkeeper::OAuth
     end
 
     it "creates token even when there is already one (default)" do
-      FactoryBot.create(:access_token, application_id: client.id, resource_owner_id: owner.id)
+      FactoryBot.create(:access_token, application_id: client.id, resource_owner: owner)
 
       expect do
         subject.authorize
@@ -72,7 +72,7 @@ module Doorkeeper::OAuth
 
     it "skips token creation if there is already one reusable" do
       allow(Doorkeeper.configuration).to receive(:reuse_access_token).and_return(true)
-      FactoryBot.create(:access_token, application_id: client.id, resource_owner_id: owner.id)
+      FactoryBot.create(:access_token, application_id: client.id, resource_owner: owner)
 
       expect do
         subject.authorize
@@ -81,7 +81,7 @@ module Doorkeeper::OAuth
 
     it "creates token when there is already one but non reusable" do
       allow(Doorkeeper.configuration).to receive(:reuse_access_token).and_return(true)
-      FactoryBot.create(:access_token, application_id: client.id, resource_owner_id: owner.id)
+      FactoryBot.create(:access_token, application_id: client.id, resource_owner: owner)
       allow_any_instance_of(Doorkeeper::AccessToken).to receive(:reusable?).and_return(false)
 
       expect do

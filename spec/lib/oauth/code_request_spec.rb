@@ -23,7 +23,7 @@ module Doorkeeper::OAuth
       pre_auth
     end
 
-    let(:owner) { double :owner, id: 8900 }
+    let(:owner) { FactoryBot.create(:resource_owner) }
 
     subject do
       CodeRequest.new(pre_auth, owner)

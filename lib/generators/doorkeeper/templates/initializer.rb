@@ -256,7 +256,7 @@ Doorkeeper.configure do
   #   {
   #     "sub": "Z5O3upPC88QrAjx00dis",
   #     "aud": "https://protected.example.net/resource",
-  #     "username": User.find(token.resource_owner_id).username
+  #     "username": User.find(token.resource_owner).username
   #   }
   # end
   #

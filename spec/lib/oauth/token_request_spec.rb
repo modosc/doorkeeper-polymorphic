@@ -8,6 +8,10 @@ module Doorkeeper::OAuth
       FactoryBot.create(:application, scopes: "public")
     end
 
+    let :owner do
+      FactoryBot.create(:resource_owner)
+    end
+
     let :pre_auth do
       server = Doorkeeper.configuration
       allow(server).to receive(:default_scopes).and_return(Scopes.from_string("public"))
@@ -24,10 +28,6 @@ module Doorkeeper::OAuth
       pre_auth = PreAuthorization.new(server, attributes)
       pre_auth.authorizable?
       pre_auth
-    end
-
-    let :owner do
-      double :owner, id: 7866
     end
 
     subject do
@@ -117,7 +117,7 @@ module Doorkeeper::OAuth
       it "creates a new token if scopes do not match" do
         allow(Doorkeeper.configuration).to receive(:reuse_access_token).and_return(true)
         FactoryBot.create(:access_token, application_id: pre_auth.client.id,
-                                         resource_owner_id: owner.id, scopes: "")
+                                         resource_owner: owner, scopes: "")
         expect do
           subject.authorize
         end.to change { Doorkeeper::AccessToken.count }.by(1)
@@ -129,7 +129,7 @@ module Doorkeeper::OAuth
         allow(application.scopes).to receive(:all?).and_return(true)
 
         FactoryBot.create(:access_token, application_id: pre_auth.client.id,
-                                         resource_owner_id: owner.id, scopes: "public")
+                                         resource_owner: owner, scopes: "public")
 
         expect { subject.authorize }.not_to(change { Doorkeeper::AccessToken.count })
       end
@@ -140,7 +140,7 @@ module Doorkeeper::OAuth
         allow(application.scopes).to receive(:all?).and_return(true)
 
         FactoryBot.create(:access_token, application_id: pre_auth.client.id,
-                                         resource_owner_id: owner.id, scopes: "public")
+                                         resource_owner: owner, scopes: "public")
 
         allow_any_instance_of(Doorkeeper::AccessToken).to receive(:reusable?).and_return(false)
 

@@ -63,27 +63,25 @@ describe Doorkeeper::AccessGrant do
           expect(clazz).to receive(:upgrade_fallback_value).and_call_original
           expect(clazz.by_token(plain_text_token))
             .to have_attributes(
-              resource_owner_id: grant.resource_owner_id,
+              resource_owner: grant.resource_owner,
               application_id: grant.application_id,
               redirect_uri: grant.redirect_uri,
               expires_in: grant.expires_in,
-              scopes: grant.scopes,
+              scopes: grant.scopes
             )
 
           # Will find subsequently by hashing the token
           expect(clazz.by_token(plain_text_token))
             .to have_attributes(
-              resource_owner_id: grant.resource_owner_id,
+              resource_owner: grant.resource_owner,
               application_id: grant.application_id,
               redirect_uri: grant.redirect_uri,
               expires_in: grant.expires_in,
-              scopes: grant.scopes,
+              scopes: grant.scopes
             )
 
           # Not all the ORM support :id PK
-          if grant.respond_to?(:id)
-            expect(clazz.by_token(plain_text_token).id).to eq(grant.id)
-          end
+          expect(clazz.by_token(plain_text_token).id).to eq(grant.id) if grant.respond_to?(:id)
 
           # And it modifies the token value
           grant.reload
@@ -96,8 +94,8 @@ describe Doorkeeper::AccessGrant do
   end
 
   describe "validations" do
-    it "is invalid without resource_owner_id" do
-      subject.resource_owner_id = nil
+    it "is invalid without resource_owner" do
+      subject.resource_owner = nil
       expect(subject).not_to be_valid
     end
 
@@ -119,12 +117,14 @@ describe Doorkeeper::AccessGrant do
   end
 
   describe ".revoke_all_for" do
-    let(:resource_owner) { double(id: 100) }
+    let(:resource_owner) { FactoryBot.create(:resource_owner) }
+    let(:other_resource_owner) { FactoryBot.create(:resource_owner) }
+
     let(:application) { FactoryBot.create :application }
     let(:default_attributes) do
       {
         application: application,
-        resource_owner_id: resource_owner.id,
+        resource_owner: resource_owner,
       }
     end
 
@@ -152,7 +152,7 @@ describe Doorkeeper::AccessGrant do
     it "matches resource owner" do
       access_grant_for_different_owner = FactoryBot.create(
         :access_grant,
-        default_attributes.merge(resource_owner_id: 90)
+        default_attributes.merge(resource_owner: other_resource_owner)
       )
 
       described_class.revoke_all_for application.id, resource_owner

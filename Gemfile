@@ -14,9 +14,6 @@ gem "rspec-mocks", github: "rspec/rspec-mocks"
 gem "rspec-rails", github: "rspec/rspec-rails", branch: "4-0-maintenance"
 gem "rspec-support", github: "rspec/rspec-support"
 
-gem "rubocop", "~> 0.66"
-gem "rubocop-performance"
-
 gem "bcrypt", "~> 3.1", require: false
 
 gem "activerecord-jdbcsqlite3-adapter", platform: :jruby
