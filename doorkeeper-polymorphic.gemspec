@@ -8,7 +8,7 @@ Gem::Specification.new do |gem|
   gem.name        = "doorkeeper-polymorphic"
   gem.version     = Doorkeeper.gem_version
   gem.authors     = ["Felipe Elias Philipp", "Tute Costa", "Jon Moss", "Nikita Bulai", "jonathan schatz"]
-  gem.email       = %w[info@modo.sc]
+  gem.email       = %w[modosc@users.noreply.github.com"]
   gem.homepage    = "https://github.com/modosc/doorkeeper-polymorphic"
   gem.summary     = "OAuth 2 provider for Rails and Grape with polymorphic resource_owners"
   gem.description = "Doorkeeper-polymorphic is an OAuth 2 provider for Rails and Grape with polymorphic resource_owners."
