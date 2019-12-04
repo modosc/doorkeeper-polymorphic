@@ -6,5 +6,5 @@ Fork of [Doorkeeper](https://github.com/doorkeeper-gem/doorkeeper) with [polymor
 
 To use, add to your `Gemfile`:
 ```ruby
-gem "doorkeeper-polymorphic", github: "modosc/doorkeeper-polymorphic", require: "doorkeeper"
+gem "doorkeeper-polymorphic", github: "modosc/doorkeeper-polymorphic"
 ```
