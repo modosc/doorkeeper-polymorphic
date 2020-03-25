@@ -1,3 +1,5 @@
+# you probably don't need this since [this](https://github.com/doorkeeper-gem/doorkeeper/pull/1355) was merged into [doorkeeper](https://github.com/doorkeeper-gem/doorkeeper)
+
 # Doorkeeper-polymorphic — awesome OAuth 2 provider for your Rails / Grape app with polymorphic resource_owners
 
 [![Build Status](https://travis-ci.org/modosc/doorkeeper-polymorphic.svg?branch=master)](https://travis-ci.org/modosc/doorkeeper-polymorphic)
